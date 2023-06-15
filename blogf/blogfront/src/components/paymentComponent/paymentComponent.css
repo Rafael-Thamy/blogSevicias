@@ -1,0 +1,17 @@
+.payment {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.button1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    color: rgb(6, 12, 12);
+    background-color: rgb(43, 226, 144);
+}

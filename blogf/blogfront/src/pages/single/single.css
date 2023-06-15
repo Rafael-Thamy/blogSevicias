@@ -1,0 +1,16 @@
+/*  .single{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+} */
+
+/* @media (max-width: 500px) {
+
+    .single{
+    width: 500px;
+    display: block;
+    }
+   }  */

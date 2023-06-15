@@ -1,0 +1,91 @@
+.top {
+  width: 100%;
+  /*   height: 50px;
+ */
+  height: 70px;
+
+  background-color: rgb(210, 52, 178);
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 24px;
+  flex-wrap: wrap;
+
+}
+
+.topLeft,
+.topRight {
+/*   flex: 3;
+ */  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topIcon {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #444444;
+  cursor: pointer;
+}
+
+.topCenter {
+/*   flex: 6;
+ */
+}
+
+.link {
+  text-decoration: none;
+  color: rgb(15, 15, 15);
+
+}
+
+
+.topList {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  
+/*   font-size: 40px;
+ */
+}
+
+.topListItem {
+  margin-right: 20px;
+/*   font-size: 23px;
+ */  font-weight: 300;
+  cursor: pointer;
+
+}
+
+.topListItem:hover {
+  color: gray;
+}
+
+.topImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.topSearchIcon {
+  font-size: 18px;
+  color: #666;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+
+  .top{
+    font-size: 30px;
+
+  }
+}
