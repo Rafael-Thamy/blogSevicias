@@ -1,0 +1,34 @@
+To use Certbot with Nginx on an Ubuntu web server, you can follow these steps:
+
+1. **Install Certbot and the Nginx plugin**: Start by installing Certbot and the Certbot Nginx plugin using the package manager. Run the following commands:
+   ```shell
+   sudo apt update
+   sudo apt install certbot python3-certbot-nginx
+   ```
+
+2. **Obtain and Install the Certificate**: Run the Certbot command with the `--nginx` option, followed by the `-d` flag and the domain name for which you want to obtain the certificate. For example, to obtain a certificate for `example.com`, run the following command:
+   ```shell
+   sudo certbot --nginx -d example.com
+   ```
+
+   Certbot will automatically configure Nginx to serve the newly obtained certificate and handle the HTTPS traffic for the specified domain.
+
+3. **Select Certificate Options**: Certbot may prompt you for additional options during the certificate installation process, such as providing an email address for renewal notifications and agreeing to the terms of service. Follow the prompts to complete the certificate installation.
+
+4. **Test SSL/TLS Configuration**: After the certificate is installed, you can test the Nginx SSL/TLS configuration by running:
+   ```shell
+   sudo nginx -t
+   ```
+
+   This command will verify the Nginx configuration and ensure there are no syntax errors. If the test passes, you can proceed to restart Nginx.
+
+5. **Restart Nginx**: To apply the changes and start serving your website over HTTPS, restart the Nginx service using the following command:
+   ```shell
+   sudo service nginx restart
+   ```
+
+   Nginx will now use the SSL/TLS certificate obtained by Certbot to secure your website.
+
+Certbot will automatically set up a cron job to renew the certificate before it expires. By default, Certbot runs twice a day to check for certificate expiration and automatically renews it if necessary.
+
+Please note that these instructions assume you have Nginx already set up and configured to serve the domain you want to secure. If Nginx is not installed or not yet configured, you should set it up and configure your website before proceeding with Certbot.
