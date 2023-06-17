@@ -32,3 +32,87 @@ To use Certbot with Nginx on an Ubuntu web server, you can follow these steps:
 Certbot will automatically set up a cron job to renew the certificate before it expires. By default, Certbot runs twice a day to check for certificate expiration and automatically renews it if necessary.
 
 Please note that these instructions assume you have Nginx already set up and configured to serve the domain you want to secure. If Nginx is not installed or not yet configured, you should set it up and configure your website before proceeding with Certbot.
+
+
+
+ server {
+  server_name seviceasvicosas.net www.seviceasvicosas.net;
+
+
+  location / {
+        root /var/www/teste;
+        index  index.html index.htm;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        try_files $uri $uri/ /index.html;
+  }
+
+
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/seviceasvicosas.net/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/seviceasvicosas.net/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+ server {
+    if ($host = seviceasvicosas.net) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+  listen 80;
+  server_name seviceasvicosas.net www.seviceasvicosas.net;
+    return 404; # managed by Certbot
+
+
+}
+
+
+server {
+ server_name seviciasvicosas.com.br www.seviciasvicosas.com.br;
+
+location / {
+ root /var/www/sevicias;
+ index  index.html index.htm;
+ proxy_http_version 1.1;
+ proxy_set_header Upgrade $http_upgrade;
+ proxy_set_header Connection 'upgrade';
+ proxy_set_header Host $host;
+ proxy_cache_bypass $http_upgrade;
+ try_files $uri $uri/ /index.html;
+}
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/www.seviciasvicosas.com.br-0004/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/www.seviciasvicosas.com.br-0004/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+
+server {
+  listen 80;
+
+  location / {
+    proxy_pass https://153.92.223.148:5000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+    }
+}
+server {
+    if ($host = seviciasvicosas.com.br) {
+        return 301 https://$host$request_uri;
+                                                                     [ Read 54 lines ]
+^G Get Help      ^O Write Out     ^W Where Is      ^K Cut Text      ^J Justify       ^C Cur Pos       M-U Undo         M-A Mark Text    M-] To Bracket
+^X Exit          ^R Read File     ^\ Replace  
