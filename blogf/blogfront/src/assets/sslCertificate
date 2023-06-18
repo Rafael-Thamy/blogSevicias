@@ -8,7 +8,7 @@ To use Certbot with Nginx on an Ubuntu web server, you can follow these steps:
 
 2. **Obtain and Install the Certificate**: Run the Certbot command with the `--nginx` option, followed by the `-d` flag and the domain name for which you want to obtain the certificate. For example, to obtain a certificate for `example.com`, run the following command:
    ```shell
-   sudo certbot --nginx -d example.com
+   sudo certbot --nginx -d example.com  
    ```
 
    Certbot will automatically configure Nginx to serve the newly obtained certificate and handle the HTTPS traffic for the specified domain.

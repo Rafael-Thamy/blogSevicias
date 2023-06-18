@@ -11,7 +11,7 @@ export default function SinglePost() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
   const [post, setPost] = useState({});
-  const PF = "http://153.92.223.148:5000/images/";
+  const PF = "https://153.92.223.148:5000/images/";
   const { user } = useContext(Context);
   const [title, setTitle] = useState("");
   const [photo, setPhoto] = useState("");
