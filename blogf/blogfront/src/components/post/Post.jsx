@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 export default function   Post({ post }) {
-  const PF = "http://localhost:5000/images/";
+  const PF = "https://153.92.223.148:5000/images/";
   return (
     <div className="post">
       {post.photo && <img className="postImg" src={PF + post.photo} alt="" />}
