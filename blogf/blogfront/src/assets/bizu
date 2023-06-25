@@ -52,17 +52,10 @@ server {
    proxy_cache_bypass $http_upgrade;
    }
 
-   
-   listen 443 ssl; # managed by Certbot
-   ssl_certificate /etc/letsencrypt/live/www.seviciasvicosas.com.br-0006/fullchain.pem; # managed by Certbot
-   ssl_certificate_key /etc/letsencrypt/live/www.seviciasvicosas.com.br-0006/privkey.pem; # managed by Certbot
-   include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-   ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-
-
 
 }
+
+
 server {
    if ($host = seviciasvicosas.com.br) {
        return 301 https://$host$request_uri;
@@ -80,3 +73,150 @@ server_name www.seviciasvicosas.com.br seviciasvicosas.com.br;
    
   
   }
+
+
+
+ server {
+ listen 80;
+ server_name www.seviciasvicosas.com.br seviciasvicosas.com.br;
+
+location / {
+ root /var/www/sevicias;
+ index  index.html index.htm;
+ proxy_http_version 1.1;
+ proxy_set_header Upgrade $http_upgrade;
+ proxy_set_header Connection 'upgrade';
+ proxy_set_header Host $host;
+ proxy_cache_bypass $http_upgrade;
+ try_files $uri $uri/ /index.html;
+}
+
+location /api {
+   proxy_pass http://153.92.223.148:5000;
+   proxy_http_version 1.1;
+   proxy_set_header Upgrade $http_upgrade;
+   proxy_set_header Connection 'upgrade';
+   proxy_set_header Host $host;
+   proxy_cache_bypass $http_upgrade;
+   }
+
+}
+
+
+server {
+    listen 80;
+    server_name www.seviciasvicosas.com.br seviciasvicosas.com.br;
+    
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name www.seviciasvicosas.com.br seviciasvicosas.com.br;
+    
+    # SSL Certificate Configuration
+    ssl_certificate /etc/letsencrypt/live/www.seviciasvicosas.com.br-0010/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/www.seviciasvicosas.com.br-0010/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+    
+    location / {
+        root /var/www/sevicias;
+        index index.html index.htm;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        try_files $uri $uri/ /index.html;
+    }
+    
+    location /api {
+        proxy_pass http://153.92.223.148:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+
+  listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/www.seviciasvicosas.com.br-0010/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/www.seviciasvicosas.com.br-0010/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+    ssl_certificate /etc/letsencrypt/live/api.seviciasvicosas.com.br/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/api.seviciasvicosas.com.br/privkey.pem; # managed by Certbot
+
+
+    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx file to access https api webserver
+
+const express = require("express");
+const https = require("https");
+const fs = require("fs");
+const app = express();
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const authRoute = require("./routes/auth");
+const userRoute = require("./routes/users");
+const postRoute = require("./routes/posts");
+const categoryRoute = require("./routes/categories");
+const multer = require("multer");
+const path = require("path");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+
+dotenv.config();
+app.use(express.json());
+app.use("/images", express.static(path.join(__dirname, "/images")));
+
+// Mongoose database connection
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log(err));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(bodyParser.json());
+app.use(cors());
+
+const upload = multer({ storage: storage });
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  res.status(200).json("File has been uploaded");
+});
+
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
+app.use("/api/categories", categoryRoute);
+
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/api.seviciasvicosas.com.br-0001/privkey.pem"), // Replace with the actual path to your private key file
+  cert: fs.readFileSync("/etc/letsencrypt/live/api.seviciasvicosas.com.br-0001/fullchain.pem"), // Replace with the actual path to your certificate file
+};
+
+https.createServer(options, app).listen(8443, () => {
+  console.log("Backend is running over HTTPS.");
+});
+root@servidor1:~/blogSevicias/apiBlog/blogapiteste/blogapi#
